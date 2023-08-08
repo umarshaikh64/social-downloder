@@ -11,10 +11,10 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 // app.use(cors())
 // var allowedOrigins = ['https://video-rtc.com/'];
-// var corsOptions = {
-//     origin: 'https://video-rtc.com/',
-//     optionsSuccessStatus: 200 // For legacy browser support
-// }
+var corsOptions = {
+    origin: 'https://video-rtc.com/',
+    optionsSuccessStatus: 200 // For legacy browser support
+}
 
 // app.use(cors(corsOptions));
 
