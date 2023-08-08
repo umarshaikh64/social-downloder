@@ -3,12 +3,13 @@ const bodyParser = require("body-parser");
 const fs = require('fs');
 const ytdl = require('ytdl-core');
 const path = require('path');
-
+var cors = require('cors')
 
 const app = express();
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
+app.use(cors())
 // https://youtube.com/shorts/UHHEPlIEO6Y?feature=share
 
 
