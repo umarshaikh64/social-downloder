@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Youtube Downloader</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css"
+        integrity="sha384-B0vP5xmATw1+K9KRQjQERJvTumQW0nPEzvF6L/Z6nronJ3oUOFUFpCjEUQouq2+l" crossorigin="anonymous" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css"
+        integrity="sha512-iBBXm8fW90+nuLcSKlbmrPcLa0OT92xO1BIsZ+ywDWZCvqsWgccV3gFoRBv0z+8dLJgyAHIhR35VZc2oM/gI1w=="
+        crossorigin="anonymous" />
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
+        integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
+        crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
+        integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+        crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
+        integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+        crossorigin="anonymous"></script>
+
+
+    <style>
+        .btnDiv {
+            width: 11rem !important;
+            display: flex !important;
+            border-radius: 5px !important;
+            margin-block: 6px;
+            background-color: #ccc;
+        }
+
+        .btnDiv button {
+            width: 60%;
+            background-color: red !important;
+            border: none !important;
+            outline: none;
+            border-top-left-radius: 0 !important;
+            color: #fff;
+            font-weight: 700;
+            border-bottom-left-radius: 0 !important;
+            
+        }
+
+        .qualityText {
+            width: 40%;
+            text-align: center;
+            display: flex;
+align-items: center;
+justify-content: center;
+            /* padding: 5px 10px !important; */
+            font-size: 18px !important;
+            font-weight: 700 !important;
+
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container my-5">
+        <h1><strong>Youtube Downloader</strong></h1>
+        <div class="form-group">
+            <label for="exampleInputEmail1">Video Link from Youtube</label>
+            <input type="text" id="url" value="https://www.youtube.com/shorts/UHHEPlIEO6Y" class="form-control"
+                placeholder="Enter Video URL" name="url" />
+        </div>
+        <button type="submit" id="submit" class="btn btn-primary">Download</button>
+
+        <div class="container mt-4" id="mainDiv" style="display: none;">
+            <div class="row">
+                <div class="col-md-6">
+                    <iframe class="d-flex" width="400" height="300" frameborder="0" id="preview">
+                    </iframe>
+                </div>
+                <div class="col-md-6" style="display: flex;align-items: center;flex-direction: column;" id="btnShow">
+                    <!-- <div style="border: 1px solid #111;width: 10rem; display: flex;border-radius: 5px;" >
+                        <span style="padding: 5px 10px;font-size: 18px; font-weight: 700;">720p</span>
+                        <button class="btn btn-success" style="background-color: red !important;border: none !important;outline: none; border-top-left-radius: 0 !important; border-bottom-left-radius: 0 !important;">Download</button>
+                    </div> -->
+                </div>
+            </div>
+        </div>
+
+    </div>
+</body>
+<script src="https://cdn.jsdelivr.net/npm/axios@1.4.0/dist/axios.min.js"></script>
+<script>
+    const qualityLabel = ["1080p", "720p", "480p","360","240p", "144p",];
+    const submit = document.getElementById("submit");
+    const preview = document.getElementById("preview");
+    const mainDiv = document.getElementById("mainDiv");
+    submit.addEventListener("click", async (e) => {
+        submit.innerText = "Please wait..."
+        const url = document.getElementById('url').value;
+        const response = await axios.post("/youtube", { url })
+        if (response.status == 200) {
+            const addedQualities = new Set();
+            submit.innerText = "Submit"
+            mainDiv.style.display="block";
+            console.log(response.data.data.formats);
+            preview.src = response.data.data.videoDetails.embed.iframeUrl;
+            response.data.data.formats.forEach((v, i) => {
+                if (qualityLabel.includes(v.qualityLabel) && !addedQualities.has(v.qualityLabel)) {
+                    const span = document.createElement("span");
+                    const button = document.createElement("button");
+                    const btnDiv = document.createElement('div');
+                    span.innerText = v.qualityLabel;
+                    span.classList.add("qualityText")
+                    button.classList.add("btn"),
+                        btnDiv.classList.add("btnDiv");
+                    button.innerText = "Download"
+                    btnDiv.appendChild(span);
+                    btnDiv.appendChild(button)
+                    document.getElementById("btnShow")
+                        .append(btnDiv)
+                    addedQualities.add(v.qualityLabel);
+
+                }
+            })
+        } else {
+            console.log(response);
+        }
+    })
+</script>
+
+</html>
