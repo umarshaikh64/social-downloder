@@ -12,11 +12,11 @@ app.use(bodyParser.urlencoded({ extended: true }));
 // app.use(cors())
 // var allowedOrigins = ['https://video-rtc.com/'];
 var corsOptions = {
-    origin: 'https://video-rtc.com/',
+    origin: 'https://video-rtc.com',
     optionsSuccessStatus: 200 // For legacy browser support
 }
 
-// app.use(cors(corsOptions));
+app.use(cors(corsOptions));
 
 // https://youtube.com/shorts/UHHEPlIEO6Y?feature=share
 
@@ -27,7 +27,7 @@ app.get("/", (req, res) => {
 
 })
 
-app.post("/youtube", cors(corsOptions),async (req, res) => {
+app.post("/youtube",async (req, res) => {
     const url = req.body.url;
     try {
         const info = await ytdl.getInfo(url);
