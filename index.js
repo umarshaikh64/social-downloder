@@ -6,12 +6,15 @@ const request = require("request");
 const { getTikTokIdVideo } = require("./app.helper");
 const axios = require("axios").default;
 const https = require("https")
+var cors = require('cors');
 
 const app = express();
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 const PORT = 3000;
-
+app.use(cors({
+  origin: 'https://video-rtc.com'
+}));
 app.get("/", (req, res) => {
     res.sendFile(path.join(__dirname + '/index.html'));
 })
