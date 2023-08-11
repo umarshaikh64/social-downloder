@@ -224,37 +224,129 @@ app.post("/tiktok", async (req, res) => {
 });
 
 
-app.post("/vimeo", async (req, res) => {
-    var inputVideoUrl = req.body.url
-    if (inputVideoUrl.slice(-1) === '/') {
-        inputVideoUrl = inputVideoUrl.slice(0, -1);
-    }
-    const videoId = inputVideoUrl.split('/').pop();
-    const videoJsonConfigUrl = `https://player.vimeo.com/video/${videoId}/config`;
-    await new Promise((resolve, reject) => {
-        https.get(videoJsonConfigUrl, (res) => {
-            let result = '';
-            res.on('data', data => {
-                result += data;
-            });
-            res.on('error', err => {
-                reject(err);
-            });
-            res.on('end', () => {
-                resolve(JSON.parse(result));
-            });
-        });
-    }).then((resp) => {
-        res.status(200).json({
+// app.post("/vimeo", async (req, res) => {
+//     var inputVideoUrl = req.body.url
+//     if (inputVideoUrl.slice(-1) === '/') {
+//         inputVideoUrl = inputVideoUrl.slice(0, -1);
+//     }
+//     const videoId = inputVideoUrl.split('/').pop();
+//     const videoJsonConfigUrl = `https://player.vimeo.com/video/${videoId}/config`;
+//     await new Promise((resolve, reject) => {
+//         https.get(videoJsonConfigUrl, (res) => {
+//             let result = '';
+//             res.on('data', data => {
+//                 result += data;
+//             });
+//             res.on('error', err => {
+//                 reject(err);
+//             });
+//             res.on('end', () => {
+//                 resolve(JSON.parse(result));
+//             });
+//         });
+//     }).then((resp) => {
+//         res.status(200).json({
+//             status: false,
+//             code: 200,
+//             data: resp
+//         });
+//     }).catch((error) => {
+//         res.status(500).json({
+//             status: false,
+//             code: 500,
+//             error: error
+//         });
+//     });
+// })
+
+
+
+app.post("/vimeoTaskId", async (req, res) => {
+    const fId = req.body.fId;
+    const url = req.body.url
+    if (fId == "" || fId == null || fId == undefined && url == "" || url == null || url == undefined) {
+        return res.status(400).json({
             status: false,
+            code: 400,
+            error: "Formate is required"
+        })
+    }
+    await axios.post("https://api.w03.savethevideo.com/tasks", {
+        "type": "download",
+        "url": url,
+        "format": fId
+    }).then((res1) => {
+        res.status(200).json({
+            status: true,
             code: 200,
-            data: resp
+            data: res1.data
         });
-    }).catch((error) => {
+    }).catch((er) => {
         res.status(500).json({
             status: false,
             code: 500,
-            error: error
+            error: er
+        });
+    })
+});
+
+
+app.post("/vimeoDownload/:id", async (req, res) => {
+    const id = req.params.id;
+    console.log(id);
+    if (id == "" || id == null || id == undefined) {
+        return res.status(400).json({
+            status: false,
+            code: 400,
+            error: "Download Id is required"
+        })
+    }
+    await axios.get(`https://api.w03.savethevideo.com/tasks/${id}`).then((res1) => {
+        res.status(200).json({
+            status: true,
+            code: 200,
+            data: res1.data
+        });
+    }).catch((er) => {
+        res.status(500).json({
+            status: false,
+            code: 500,
+            error: er
+        });
+    })
+});
+app.post("/vimeo", async (req, res) => {
+    var inputVideoUrl = req.body.url
+    if (!inputVideoUrl.startsWith("https://vimeo.com/")) {
+        return res.status(400).json({
+            status: false,
+            code: 400,
+            error: "The Url is invalid"
+        })
+    }
+
+    await axios.post("https://api.w03.savethevideo.com/tasks", {
+        "type": "info",
+        "url": inputVideoUrl
+    }).then(async (res1) => {
+        await axios.get(`https://api.w03.savethevideo.com/videos/${res1.data.id}`).then((resp) => {
+            res.status(200).json({
+                status: true,
+                code: 200,
+                data: resp.data
+            });
+        }).catch((er) => {
+            res.status(500).json({
+                status: false,
+                code: 500,
+                error: er
+            });
+        })
+    }).catch((e) => {
+        res.status(500).json({
+            status: false,
+            code: 500,
+            error: e
         });
     });
 })
