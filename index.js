@@ -5,19 +5,21 @@ const path = require('path');
 const request = require("request");
 const { getTikTokIdVideo } = require("./app.helper");
 const axios = require("axios").default;
-const https = require("https")
-var cors = require('cors');
+var https = require('https');
+var fs = require('fs');
+const cors = require("cors");
 
 const app = express();
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 const PORT = 3000;
-app.use(cors({
-  origin: 'https://video-rtc.com'
-}));
+
+app.use(cors())
+app.use(express.static(path.join(__dirname + "/downloads/")))
 app.get("/", (req, res) => {
     res.sendFile(path.join(__dirname + '/index.html'));
-})
+});
+
 app.post("/youtube", async (req, res) => {
     const url = req.body.url;
     try {
@@ -37,23 +39,19 @@ app.post("/youtube", async (req, res) => {
     }
 });
 
+
+
+
 app.post("/instagram", async (req, res) => {
-    const url = req.body.url
+    const { url } = req.body;
     if (!url || !url.startsWith("https://www.instagram.com/")) {
         return res.status(400).json({
             status: false,
             code: 400,
-            error: "The link you have entered is invalid. "
+            error: "The link or type you have entered is invalid."
         });
     }
-    let options = {
-        method: 'GET',
-        url: 'https://instagram-bulk-profile-scrapper.p.rapidapi.com/clients/api/ig/media_by_id',
-        headers: {
-            'X-RapidAPI-Key': 'baf38d7eb2msh17d5250e3fcb6b1p11aecajsn8f559cbcb328',
-            'X-RapidAPI-Host': 'instagram-bulk-profile-scrapper.p.rapidapi.com'
-        }
-    };
+    let query;
     if (url.startsWith("https://www.instagram.com/reel/")) {
         const instagramRegex = /(?:https?:\/\/www\.)?instagram\.com\S*?\/reel\/(\w{11})\/?/;
         let shortcode = url.match(instagramRegex);
@@ -64,10 +62,7 @@ app.post("/instagram", async (req, res) => {
                 error: "The link you have entered is invalid. "
             });
         }
-        options['params'] = {
-            shortcode: shortcode[1],
-            response_type: 'reels'
-        }
+        query = "response_type=reels&shortcode=" + shortcode[1];
     } else if (url.startsWith("https://www.instagram.com/p/")) {
         const instagramRegex = /(?:https?:\/\/www\.)?instagram\.com\S*?\/p\/(\w{11})\/?/;
         let shortcode = url.match(instagramRegex);
@@ -78,16 +73,24 @@ app.post("/instagram", async (req, res) => {
                 error: "The link you have entered is invalid. "
             });
         }
-        options['params'] = {
-            shortcode: shortcode[1],
-            response_type: 'feeds'
-        }
+        query = "response_type=reels&shortcode=" + shortcode[1];
     } else {
         return res.status(400).json({
             status: false,
             code: 400,
             error: "The link you have entered is invalid. "
         });
+    }
+    // type="reels,feed"
+
+
+    const options = {
+        method: "GET",
+        url: `https://instagram-bulk-profile-scrapper.p.rapidapi.com/clients/api/ig/media_by_id?corsEnabled=true&${query}`,
+        headers: {
+            'X-RapidAPI-Key': 'ef60724516mshe06808ae9cf170ap1e9908jsn36a5638bc979',
+            'X-RapidAPI-Host': 'instagram-bulk-profile-scrapper.p.rapidapi.com'
+        }
     }
     try {
         const response = await axios.request(options);
@@ -103,8 +106,104 @@ app.post("/instagram", async (req, res) => {
             error: error
         });
     }
+})
 
-});
+
+
+// app.post("/instagram", async (req, res) => {
+//     const url = req.body.url
+//     if (!url || !url.startsWith("https://www.instagram.com/")) {
+//         return res.status(400).json({
+//             status: false,
+//             code: 400,
+//             error: "The link you have entered is invalid. "
+//         });
+//     }
+//     let options = {
+//         method: 'GET',
+//         url: 'https://instagram-bulk-profile-scrapper.p.rapidapi.com/clients/api/ig/media_by_id',
+//         headers: {
+//             'X-RapidAPI-Key': 'baf38d7eb2msh17d5250e3fcb6b1p11aecajsn8f559cbcb328',
+//             'X-RapidAPI-Host': 'instagram-bulk-profile-scrapper.p.rapidapi.com'
+//         }
+//     };
+//     if (url.startsWith("https://www.instagram.com/reel/")) {
+//         const instagramRegex = /(?:https?:\/\/www\.)?instagram\.com\S*?\/reel\/(\w{11})\/?/;
+//         let shortcode = url.match(instagramRegex);
+//         if (shortcode[1] == null) {
+//             return res.status(400).json({
+//                 status: false,
+//                 code: 400,
+//                 error: "The link you have entered is invalid. "
+//             });
+//         }
+//         options['params'] = {
+//             shortcode: shortcode[1],
+//             response_type: 'reels'
+//         }
+//     } else if (url.startsWith("https://www.instagram.com/p/")) {
+//         const instagramRegex = /(?:https?:\/\/www\.)?instagram\.com\S*?\/p\/(\w{11})\/?/;
+//         let shortcode = url.match(instagramRegex);
+//         if (shortcode[1] == null) {
+//             return res.status(400).json({
+//                 status: false,
+//                 code: 400,
+//                 error: "The link you have entered is invalid. "
+//             });
+//         }
+//         options['params'] = {
+//             shortcode: shortcode[1],
+//             response_type: 'feeds'
+//         }
+//     } else {
+//         return res.status(400).json({
+//             status: false,
+//             code: 400,
+//             error: "The link you have entered is invalid. "
+//         });
+//     }
+//     try {
+//         const response = await axios.request(options);
+//         res.status(200).json({
+//             status: false,
+//             code: 200,
+//             data: response.data
+//         });
+//     } catch (error) {
+//         res.status(500).json({
+//             status: false,
+//             code: 500,
+//             error: error
+//         });
+//     }
+
+// });
+
+
+// app.post("/fbDownload", async (req, res) => {
+//     const url = req.body.url;
+//     const formData = new FormData()
+//     formData.append("url", url);
+//     formData.append("host", "facebook");
+//     formData.append("action", "call_fb_yt_downloader")
+//     formData.append("security", "794da90332")
+//     formData.append("mp3", "off")
+//     try {
+//         const resp = await axios.post("https://snaptik.ink/wp-admin/admin-ajax.php", formData);
+//         res.status(200).json({
+//             status: true,
+//             code: 200,
+//             data: resp.data
+//         })
+//     } catch (error) {
+//         res.status(500).json({
+//             status: false,
+//             code: 500,
+//             error: error
+//         });
+//     }
+// });
+
 
 app.post("/facebook", async (req, res) => {
     const url = req.body.url;
@@ -224,42 +323,6 @@ app.post("/tiktok", async (req, res) => {
 });
 
 
-// app.post("/vimeo", async (req, res) => {
-//     var inputVideoUrl = req.body.url
-//     if (inputVideoUrl.slice(-1) === '/') {
-//         inputVideoUrl = inputVideoUrl.slice(0, -1);
-//     }
-//     const videoId = inputVideoUrl.split('/').pop();
-//     const videoJsonConfigUrl = `https://player.vimeo.com/video/${videoId}/config`;
-//     await new Promise((resolve, reject) => {
-//         https.get(videoJsonConfigUrl, (res) => {
-//             let result = '';
-//             res.on('data', data => {
-//                 result += data;
-//             });
-//             res.on('error', err => {
-//                 reject(err);
-//             });
-//             res.on('end', () => {
-//                 resolve(JSON.parse(result));
-//             });
-//         });
-//     }).then((resp) => {
-//         res.status(200).json({
-//             status: false,
-//             code: 200,
-//             data: resp
-//         });
-//     }).catch((error) => {
-//         res.status(500).json({
-//             status: false,
-//             code: 500,
-//             error: error
-//         });
-//     });
-// })
-
-
 
 app.post("/vimeoTaskId", async (req, res) => {
     const fId = req.body.fId;
@@ -351,12 +414,114 @@ app.post("/vimeo", async (req, res) => {
     });
 })
 
-app.listen(PORT, () => {
-    console.log("server is running on Port 3000");
+
+
+
+app.post('/downloadMedia', async (req, res) => {
+    try {
+        await download(req.body.url, "./downloads/temp.mp4");
+        res.status(200).json(
+            {
+                status: true,
+                code: 200,
+                data: {
+                    filename: "/temp.mp4"
+                }
+            }
+        );
+    } catch (error) {
+        res.status(500).json({
+            status: false,
+            code: 500,
+            error: error
+        });
+    }
 })
 
 
 
+app.post('/downloadFB', async (req, res) => {
+    try {
+        await download(req.body.url, "./downloads/temp.mp4");
+        res.status(200).json(
+            {
+                status: true,
+                code: 200,
+                data: {
+                    filename: "/temp.mp4"
+                }
+            }
+        );
+    } catch (error) {
+        res.status(500).json({
+            status: false,
+            code: 500,
+            error: error
+        });
+    }
+})
+
+app.get("/downloadFile/:filename/:name", (req, res) => {
+    const filename = req.params.filename;
+    const name = req.params.name
+    if (filename == "" && filename == undefined) {
+        return res.status(400).json({
+            status: false,
+            code: 400,
+            error: "Please Pass the file name"
+        });
+    }
+
+    const file = `${__dirname}/downloads/${filename}`;
+
+    if (fs.existsSync(file)) {
+        res.download(file, name,
+            (err) => {
+                if (err) {
+                    res.status(400).json({
+                        status: false,
+                        code: 400,
+                        error: err,
+                    })
+                }
+            });
+        // fs.unlink(file, () => { });
+    } else {
+        return res.status(404).json({
+            status: false,
+            code: 404,
+            error: "File not Founded"
+        });
+    }
+
+});
+
+async function download(uri, filename) {
+    return new Promise((resolve, reject) => {
+        const fileStream = fs.createWriteStream(filename);
+
+        https.get(uri, response => {
+            if (response.statusCode !== 200) {
+                reject(new Error(`Failed to download ${uri}. Status code: ${response.statusCode}`));
+                return;
+            }
+            response.pipe(fileStream)
+            fileStream.on('finish', () => {
+                fileStream.close();
+                resolve();
+            });
+            fileStream.on('error', error => {
+                fs.unlink(filename, () => { }); // Delete the file
+                reject(error);
+            });
+        }).on('error', error => {
+            reject(error);
+        });
+    });
+}
 
 
 
+app.listen(PORT, () => {
+    console.log("server is running on Port 3000");
+})
