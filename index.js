@@ -14,7 +14,11 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 const PORT = 3000;
 
-app.use(cors())
+app.use(cors(
+    {
+  origin: 'https://video-rtc.com/'
+}
+))
 app.use(express.static(path.join(__dirname + "/downloads/")))
 app.get("/", (req, res) => {
     res.sendFile(path.join(__dirname + '/index.html'));
