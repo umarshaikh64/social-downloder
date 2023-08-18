@@ -1,127 +1,914 @@
-<!DOCTYPE html>
-<html lang="en">
-
-<head>
-    <meta charset="UTF-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Youtube Downloader</title>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css"
-        integrity="sha384-B0vP5xmATw1+K9KRQjQERJvTumQW0nPEzvF6L/Z6nronJ3oUOFUFpCjEUQouq2+l" crossorigin="anonymous" />
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css"
-        integrity="sha512-iBBXm8fW90+nuLcSKlbmrPcLa0OT92xO1BIsZ+ywDWZCvqsWgccV3gFoRBv0z+8dLJgyAHIhR35VZc2oM/gI1w=="
-        crossorigin="anonymous" />
-    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
-        integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
-        crossorigin="anonymous"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
-        integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
-        crossorigin="anonymous"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
-        integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
-        crossorigin="anonymous"></script>
-
-
+<html><head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="profile" href="http://gmpg.org/xfn/11">
+    <title>Stream Vlogger</title>
+    <meta charset="utf-8">
+    <meta name="robots" content="nofollow, index">
+    <meta property="og:locale" content="en_GB">
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="Stream Vlogger">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:site" content="@mumarshaikh64@gmail.com">
+    <link rel="dns-prefetch" href="//www.googletagmanager.com">
+    <link rel="dns-prefetch" href="//fonts.googleapis.com">
+    <link rel="dns-prefetch" href="//pagead2.googlesyndication.com">
+    <link rel="alternate" type="application/rss+xml" title="Stream Vlogger » Feed" href="https://video-rtc.com/feed/">
+    <link rel="alternate" type="application/rss+xml" title="Stream Vlogger » Comments Feed" href="https://video-rtc.com/comments/feed/">
     <style>
-        .btnDiv {
-            width: 11rem !important;
-            display: flex !important;
-            border-radius: 5px !important;
-            margin-block: 6px;
-            background-color: #ccc;
-        }
-
-        .btnDiv button {
-            width: 60%;
-            background-color: red !important;
+        img.wp-smiley,
+        img.emoji {
+            display: inline !important;
             border: none !important;
-            outline: none;
-            border-top-left-radius: 0 !important;
-            color: #fff;
-            font-weight: 700;
-            border-bottom-left-radius: 0 !important;
-            
-        }
-
-        .qualityText {
-            width: 40%;
-            text-align: center;
-            display: flex;
-align-items: center;
-justify-content: center;
-            /* padding: 5px 10px !important; */
-            font-size: 18px !important;
-            font-weight: 700 !important;
-
+            box-shadow: none !important;
+            height: 1em !important;
+            width: 1em !important;
+            margin: 0 0.07em !important;
+            vertical-align: -0.1em !important;
+            background: none !important;
+            padding: 0 !important;
         }
     </style>
-</head>
 
-<body>
-    <div class="container my-5">
-        <h1><strong>Youtube Downloader</strong></h1>
-        <div class="form-group">
-            <label for="exampleInputEmail1">Video Link from Youtube</label>
-            <input type="text" id="url" value="https://www.youtube.com/shorts/UHHEPlIEO6Y" class="form-control"
-                placeholder="Enter Video URL" name="url" />
-        </div>
-        <button type="submit" id="submit" class="btn btn-primary">Download</button>
+    <link rel="stylesheet" id="newsup-fonts-css" href="//fonts.googleapis.com/css?family=Montserrat%3A400%2C500%2C700%2C800%7CWork%2BSans%3A300%2C400%2C500%2C600%2C700%2C800%2C900%26display%3Dswap&amp;subset=latin%2Clatin-ext" media="all">
+    <link rel="stylesheet" id="bootstrap-css" href="https://video-rtc.com/wp-content/themes/newsup/css/bootstrap.css?ver=6.2.2" media="all">
+    <link rel="stylesheet" id="newsup-style-css" href="https://video-rtc.com/wp-content/themes/newsbulk/style.css?ver=6.2.2" media="all">
+    <link rel="stylesheet" id="font-awesome-5-all-css" href="https://video-rtc.com/wp-content/themes/newsup/css/font-awesome/css/all.min.css?ver=6.2.2" media="all">
+    <link rel="stylesheet" id="font-awesome-4-shim-css" href="https://video-rtc.com/wp-content/themes/newsup/css/font-awesome/css/v4-shims.min.css?ver=6.2.2" media="all">
 
-        <div class="container mt-4" id="mainDiv" style="display: none;">
-            <div class="row">
-                <div class="col-md-6">
-                    <iframe class="d-flex" width="400" height="300" frameborder="0" id="preview">
-                    </iframe>
-                </div>
-                <div class="col-md-6" style="display: flex;align-items: center;flex-direction: column;" id="btnShow">
-                    <!-- <div style="border: 1px solid #111;width: 10rem; display: flex;border-radius: 5px;" >
-                        <span style="padding: 5px 10px;font-size: 18px; font-weight: 700;">720p</span>
-                        <button class="btn btn-success" style="background-color: red !important;border: none !important;outline: none; border-top-left-radius: 0 !important; border-bottom-left-radius: 0 !important;">Download</button>
-                    </div> -->
-                </div>
-            </div>
-        </div>
+    <style id="wp-custom-css">
+        .mg-fea-area {
+            display: none !important;
+        }
 
+        #url {
+
+            border-top-right-radius: 0 !important;
+            border-bottom-right-radius: 0 !important;
+            box-shadow: none !important;
+            outline: none !important;
+
+        }
+
+        #url {
+
+            border-top-left-radius: 5px !important;
+            border-bottom-left-radius: 5px !important;
+            border: 2px solid red !important;
+
+        }
+
+        .btn-download {
+            border-top-left-radius: 0px !important;
+            border-bottom-left-radius: 0px !important;
+            box-shadow: none !important;
+            background: red !important;
+            border: none !important;
+            height: 100% !important;
+        }
+    </style>
+
+    <link href="https://vjs.zencdn.net/8.3.0/video-js.css" rel="stylesheet">
+
+<style>
+    .btnDiv {
+        width: 14rem !important;
+        display: flex !important;
+        border-radius: 5px !important;
+        margin-block: 6px;
+        background-color: #ccc;
+    }
+
+    .btnDiv button {
+        width: 60%;
+        background-color: red !important;
+        border: none !important;
+        outline: none;
+        border-top-left-radius: 0 !important;
+        color: #fff;
+        font-weight: 700;
+        border-bottom-left-radius: 0 !important;
+        box-shadow: none !important;
+
+    }
+
+    .qualityText {
+        width: 40%;
+        text-align: center;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        /* padding: 5px 10px !important; */
+        font-size: 18px !important;
+        font-weight: 700 !important;
+    }
+
+    iframe[title="vimeo-player"] {
+        width: 100% !important;
+        height: 100% !important;
+    }
+
+    .vp-sidedock,
+    .vp-title,
+    .vp-badge,
+    .Button_module_button__f5fb72bd,
+    .Link_module_link__b2eb3a07 {
+        display: none !important;
+    }
+
+    #loader {
+        width: 100% !important;
+        height: 100% !important;
+        position: absolute;
+        top: 0;
+        left: 0;
+        background-color: #ff000000;
+        display: none;
+    }
+
+    .Header {
+        display: none !important;
+    }
+</style></head>
+
+<body><div id="content" class="container-fluid home">
+    <!--row-->
+    <div class="col-md-8 m-auto">
+        <div class="input-group"> <input name="url" type="url" id="url" class="form-control" placeholder="Paste video URL" autocomplete="off"> <input type="hidden" name="token" id="token" value="69107c2442e15dc000c21657f17a45b96c07640c594f8386024307a5b416da27"> <span class="input-group-btn">
+                <button onclick="onSubmitUrl()" class="btn btn-download text-white" type="button" id="send" aria-label="sbut">
+                    <i id="icon" class="fa fa-download"></i>
+                    <img id="imge" src="https://video-rtc.com/wp-content/uploads/icon/loder.gif" alt="loader" style="width:30px;height:30px; display:none">
+                </button> </span> </div><input type="hidden" id="lang" value="en">
     </div>
-</body>
+    <div class="container mt-4" id="mainDiv">
+        <div class="row" id="displayContent" style="display: none;"></div>
+    </div>
+    <div class="row">
+
+        <div class="col-md-12 mt-4 mb-4">
+            <div class="supp mb-3">
+                <h2>Supported Services</h2>
+                <div class="row px-3 icns">
+                    <div class="col-4 border border-right-0 pl-1 py-2"><img src="https://video-rtc.com/wp-content/uploads/icon/twitter.png" alt="twitter"> twitter</div>
+                    <div class="col-4 border border-right-0 pl-1 py-2"><img src="https://video-rtc.com/wp-content/uploads/icon/instagram.png" alt="instagram"> instagram
+                    </div>
+                    <div class="col-4 border pl-1 py-2"><img src="https://video-rtc.com/wp-content/uploads/icon/facebook.png" alt="facebook"> facebook
+                    </div>
+                </div>
+
+                <div class="row px-3 icns">
+                    <div class="col-4 border border-top-0 pl-1 py-2"><img src="https://video-rtc.com/wp-content/uploads/icon/tiktok.png" alt="tiktok">
+                        tiktok</div>
+                    <div class="col-4 border border-top-0 pl-1 py-2"><img style="width:35px;height:30px" src="https://video-rtc.com/wp-content/uploads/icon/youtube.png" alt="tiktok">
+                        youtube</div>
+                    <div class="col-4 border border-top-0 pl-1 py-2"><img style="width:35px;height:30px" src="https://video-rtc.com/wp-content/uploads/icon/vimeo.png" alt="tiktok">
+                        vimeo</div>
+
+                </div>
+
+            </div>
+            <!--         <div class="mb-3 text-center">
+            <div id="rectAd"><ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-4801415104534511"
+                    data-ad-slot="6771515382" data-ad-format="auto" data-full-width-responsive="true"></ins>
+                <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+            </div>
+        </div> -->
+
+
+
+        </div>
+    </div>
+
+</div>
+<script src="https://vjs.zencdn.net/ie8/1.1.2/videojs-ie8.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/axios@1.4.0/dist/axios.min.js"></script>
 <script>
-    const qualityLabel = ["1080p", "720p", "480p","360","240p", "144p",];
-    const submit = document.getElementById("submit");
+    // https://social-downloder.vercel.app
+    const BASEURL = "http://localhost:3000";
+    const qualityLabel = ["1080p", "720p", "480p", "360", "240p", "144p",];
     const preview = document.getElementById("preview");
     const mainDiv = document.getElementById("mainDiv");
-    submit.addEventListener("click", async (e) => {
-        submit.innerText = "Please wait..."
-        const url = document.getElementById('url').value;
-        const response = await axios.post("/youtube", { url })
-        if (response.status == 200) {
-            const addedQualities = new Set();
-            submit.innerText = "Submit"
-            mainDiv.style.display="block";
-            console.log(response.data.data.formats);
-            preview.src = response.data.data.videoDetails.embed.iframeUrl;
-            response.data.data.formats.forEach((v, i) => {
-                if (qualityLabel.includes(v.qualityLabel) && !addedQualities.has(v.qualityLabel)) {
-                    const span = document.createElement("span");
-                    const button = document.createElement("button");
-                    const btnDiv = document.createElement('div');
-                    span.innerText = v.qualityLabel;
-                    span.classList.add("qualityText")
-                    button.classList.add("btn"),
-                        btnDiv.classList.add("btnDiv");
-                    button.innerText = "Download"
-                    btnDiv.appendChild(span);
-                    btnDiv.appendChild(button)
-                    document.getElementById("btnShow")
-                        .append(btnDiv)
-                    addedQualities.add(v.qualityLabel);
+    const displayContent = document.getElementById("displayContent");
+    var videoTitle = null;
+    var isReel = false;
+    function toDataUrl(url, callback) {
+        var xhr = new XMLHttpRequest();
+        xhr.onload = function () {
+            var reader = new FileReader();
+            reader.onloadend = function () {
+                callback(reader.result);
+            }
+            reader.readAsDataURL(xhr.response);
+        };
+        xhr.open('GET', url);
+        xhr.responseType = 'blob';
+        xhr.send();
+    }
 
+    async function httpRequest(path1) {
+        const url = document.getElementById('url').value;
+        try {
+            const response = await axios.post(`${BASEURL}/${path1}`, { url });
+            console.log(response.data);
+            document.getElementById("icon").style.display = "block";
+            document.getElementById("imge").style.display = "none";
+            return response.data.data;
+        } catch (error) {
+            document.getElementById("icon").style.display = "block";
+            document.getElementById("imge").style.display = "none";
+            // console.error(error);
+            throw error;
+        }
+    }
+
+
+
+
+    
+    // youtube start
+    async function onDownloadYoutube(event) {
+        var title = "";
+        var names = videoTitle.split(" ");
+        names.forEach((e) => {
+            if (e.includes("#") || e.includes("|") || e.includes(".")) {
+            } else {
+                title += e;
+            }
+        });
+        const url = event.target.id;
+        if (event.target.dataset.type == "v") {
+            document.getElementById("youLoader").style.display = "block";
+            document.getElementById(url).style.display = "none";
+        } else if (event.target.dataset.type == "a") {
+            document.getElementById("youaLoader").style.display = "block";
+            document.getElementById(url).style.display = "none";
+        } else {
+            document.getElementById("youmLoader").style.display = "block";
+            document.getElementById(url).style.display = "none";
+        }
+        await axios.post(`${BASEURL}/downloadMedia`, { url })
+            .then(function (response) {
+                console.log(response.data);
+                var ext = response.data.data.filename.split(".")[1]
+                const a = window.document.createElement("a");
+                var name = videoTitle == null ? "StreamVlogger." + ext : title + "." + ext;
+                a.href = BASEURL + "/downloadFile" + response.data.data.filename + "/" + name;
+                a.download = name;
+                a.click();
+            }).catch((er) => {
+                alert("Please check your internet connect or reload web page");
+            })
+        if (event.target.dataset.type == "v") {
+            document.getElementById("youLoader").style.display = "none";
+            document.getElementById(url).style.display = "block";
+        } else if (event.target.dataset.type == "a") {
+            document.getElementById("youaLoader").style.display = "none";
+            document.getElementById(url).style.display = "block";
+        } else {
+            document.getElementById("youmLoader").style.display = "none";
+            document.getElementById(url).style.display = "block";
+        }
+
+    }
+    function makeYoutubeVideo(response) {
+        var yVBtn = [];
+        var audioBtn = "";
+        var yABtn = [];
+        var dub = new Set();
+        response.formats.forEach((v, i) => {
+            if (v.hasAudio && v.hasVideo) {
+                var btn = `
+              <div style="margin-top:5px;margin-bottom:5px; width: 100%; display: flex;border-radius: 5px;justify-content:space-between">
+                <span style="padding: 5px 10px;font-size: 15px; font-weight: 700;">${v.qualityLabel == null ? v.quality : v.qualityLabel}</span>
+                <button  onclick="onDownloadYoutube(event)" id="${v.url}" data-type="v"  class="btn btn-success" style="background-color: red !important;border: none !important;outline: none; border-top-left-radius: 0 !important; border-bottom-left-radius: 0 !important;">Download</button>
+                <button style="border:none;display:none;background:red"  id="youLoader"   class="btn btn-success" >
+                    <img id="imge" src="https://video-rtc.com/wp-content/uploads/icon/loder.gif" alt="loader"
+                        style="width:30px;height:30px;">
+                </button>
+                </div>`;
+                yVBtn.push(btn);
+            }
+            else if (v.hasAudio && !v.hasVideo) {
+                audioBtn = ` <div style="margin-top:5px;margin-bottom:5px; width: 100%; display: flex;border-radius: 5px;justify-content:space-between">
+                    <span style="padding: 5px 10px;font-size: 15px; font-weight: 700;">MP3</span>
+                    <button onclick="onDownloadYoutube(event)" data-type="a" id="${v.url}" class="btn btn-success" style="background-color: red !important;border: none !important;outline: none; border-top-left-radius: 0 !important; border-bottom-left-radius: 0 !important;">Download</button>
+                    <button style="border:none;display:none;background:red"  id="youaLoader"  class="btn btn-success" >
+                    <img id="imge" src="https://video-rtc.com/wp-content/uploads/icon/loder.gif" alt="loader"
+                        style="width:30px;height:30px;">
+                </button>
+                    </div>`
+            }
+            else {
+                if (!dub.has(v.qualityLabel == null ? v.quality : v.qualityLabel)) {
+                    var btn1 = `
+                     <div style="margin-top:5px;margin-bottom:5px; width: 100%; display: flex;border-radius: 5px;justify-content:space-between">
+                    <span style="padding: 5px 10px;font-size: 15px; font-weight: 700;">
+                        <i class="fa fa-volume-mute"></i>
+                        ${v.qualityLabel == null ? v.quality : v.qualityLabel}</span>
+                    <button onclick="onDownloadYoutube(event)" data-type="m"  id="${v.url}" class="btn btn-success" style="background-color: red !important;border: none !important;outline: none; border-top-left-radius: 0 !important; border-bottom-left-radius: 0 !important;">Download</button>
+                    <button style="border:none;display:none;background:red"  id="youmLoader"   class="btn btn-success" >
+                    <img id="imge" src="https://video-rtc.com/wp-content/uploads/icon/loder.gif" alt="loader"
+                        style="width:30px;height:30px;">
+                </button>
+                    </div>`;
+                    yABtn.push(btn1)
+                    dub.add(v.qualityLabel == null ? v.quality : v.qualityLabel);
                 }
+            }
+        })
+        videoTitle = response.videoDetails.title;
+        displayContent.style.display = "flex";
+        let htmlContent = `
+        <div class="col-md-6">
+                <iframe class="d-flex" src='${response.videoDetails.embed.iframeUrl}' width="400" height="300"
+                    frameborder="0" id="preview">
+                </iframe>
+        </div>
+        <div class="col-md-4" style=" height:45vh;   overflow: scroll;overflow-x:hidden; display: flex;align-items: center;flex-direction: column;" id="btnShow">
+               ${yVBtn.join(" ")}
+               ${audioBtn}
+               ${yABtn.join(" ")}
+        </div>
+        `;
+        displayContent.innerHTML = htmlContent;
+    }
+    async function onYoutubeSearch(url) {
+        if (url.startsWith("https://youtube.com/") || url.startsWith("https://www.youtube.com/") || url.startsWith("https://youtu.be/")) {
+            await httpRequest('youtube').then((res) => {
+                // console.log(res);
+                makeYoutubeVideo(res);
+            }).catch((error) => {
+                alert("May be your internet is poor please check your internet connection and tyr again \nThanks")
+
+                // console.log(error);
             })
         } else {
-            console.log(response);
+            alert("The Url is invalid please try again");
         }
-    })
-</script>
+    }
+    // youtube end
 
-</html>
+    // facebook start
+    async function onFacebookDownload(event) {
+        const id = event.target.id;
+        document.getElementById(`fbLoader${event.target.dataset.id}`).style.display = "block"
+        document.getElementById(id).style.display = "none"
+        await axios.post(`${BASEURL}/downloadFB`, {
+            url: id, onDownloadProgress: (progressEvent) => {
+                console.log(progressEvent);
+            }
+        }).then((response) => {
+            console.log(response.data);
+            const a = window.document.createElement("a");
+            var name = event.target.dataset.id == 2 ? "StreamFBDownloader.mp3" : "StreamFBDownloader.mp4";
+            a.href = BASEURL + "/downloadFile" + response.data.data.filename + "/" + name;
+            a.download = name;
+            a.click();
+        }).catch(error => {
+            console.log(error);
+        })
+        document.getElementById(`fbLoader${event.target.dataset.id}`).style.display = "none"
+        document.getElementById(id).style.display = "block"
+
+
+    }
+    function makeFacebookView(response) {
+        var btn = [];
+        if (response.length > 0) {
+            displayContent.style.display = "flex";
+            response.forEach((format, k) => {
+                var t = `<div style="margin-top:10px;margin-bottom:10px; width: 100%; display: flex;border-radius: 5px;justify-content:space-between">
+                <span style="padding: 5px 10px;font-size: 15px; font-weight: 700;">${format.quality}</span>
+                <button  id="${format.url}" data-id="${k}"  onclick="onFacebookDownload(event)" class="btn btn-success" style="background-color: red !important;border: none !important;outline: none;">Download</button>
+                <button  id="fbLoader${k}" class="btn btn-success" style="display:none; background-color: red !important;border: none !important;">
+                    <img id="imge" src="https://video-rtc.com/wp-content/uploads/icon/loder.gif" alt="loader"
+                        style="width:30px;height:30px;">
+                </button> 
+            </div>`;
+                btn.push(t);
+            });
+            let htmlContent = `
+        <div class="col-md-6">
+                <iframe class="d-flex" src='${response[0].url}' width="400" height="300"
+                    frameborder="0" id="preview">
+                </iframe>
+            </div>
+            <div class="col-md-4" style="display: flex;align-items: center;flex-direction: column;" id="btnShow">
+                ${btn.join('')}
+                
+            </div>
+           
+        </div>
+        `;
+            displayContent.innerHTML = htmlContent;
+        } else {
+            alert("Please try again");
+        }
+    }
+    async function onFacebookSearch(url) {
+        if (url.startsWith("https://www.facebook.com/") || url.startsWith("https://fb.watch/")) {
+            await httpRequest('facebook').then((res) => {
+                // document.body.append(res);
+                makeFacebookView(res);
+            }).catch((error) => {
+                alert("May be your internet is poor please check your internet connection and tyr again \nThanks")
+            })
+        } else {
+            alert("The Url is invalid please try again");
+        }
+    }
+    // facebook end
+
+
+
+    // instagram start
+    async function onDownload(event) {
+        const url = event.target.id;
+        document.getElementById(url).style.display = "none";
+        document.getElementById("loderBtn").style.display = "flex";
+        await axios.get(url, {
+            responseType: "blob", progress: (progressEvent) => {
+                console.log(progressEvent);
+            }
+        })
+            .then(function (response) {
+                const exType = response.data.type.split(".");
+                let metadata1 = {
+                    type: `video/${exType[1]}`
+                };
+                let file = new File([response.data], `temp.${exType[1]}`, metadata1);
+                var reader = new FileReader();
+                reader.onload = function () {
+                    var imageDataUrl = reader.result;
+                    const downloadLink = document.createElement("a");
+                    downloadLink.href = imageDataUrl;
+                    downloadLink.download = `Stream_Downloader.${exType[1]}`;
+                    downloadLink.click();
+                }
+                reader.readAsDataURL(file);
+            }).catch((er) => {
+                alert("Please check your internet connect or reload web page");
+            })
+        document.getElementById(url).style.display = "block";
+        document.getElementById("loderBtn").style.display = "none";
+
+    }
+
+
+    async function makeInstagramView(response) {
+        if (response.length > 0) {
+            let response1 = await fetch(response[0].items[0].image_versions2.candidates[0]['url']);
+            let data = await response1.blob();
+            let metadata = {
+                type: 'image/jpg'
+            };
+            let file = new File([data], "temp.jpg", metadata);
+            displayContent.style.display = "flex";
+            let htmlContent = '';
+            if (response[0].items.length > 0 && response[0].items.length == 1) {
+                if (isReel) {
+                    let userImageRes = await fetch(response[0].items[0].user['profile_pic_url']);
+                    let uImg = await userImageRes.blob();
+                    let metadata1 = {
+                        type: 'image/jpg'
+                    };
+                    let file1 = new File([uImg], "temp.jpg", metadata1);
+                    htmlContent = `
+                            <div class="col-md-4" style="background: #cccccc4a;
+                                    padding-block: 10px;
+                                    border-radius: 10px;
+                                    max-width: fit-content">
+                            <div style="padding-block:5px;    display: flex;
+                                        align-items: center">
+                                <img id="uImg" style="width:40px;height:40;border-radius:50%;"/>
+                                <div style="padding-inline: 10px;">
+                                    <p style="padding: 0 !important;
+                                            margin: 0 !important;
+                                            font-size: 16px;
+                                            font-weight: 600">${response[0].items[0].user['full_name']}</p]>
+                                        <p style="padding: 0 !important;
+                                                margin: 0 !important;
+                                                font-size: 12px">${response[0].items[0].user['username']}</p>
+                                    </div>
+                            </div>
+                            <div style="width:266px;height:300px;border-radius:10px;position:relative">
+                                <img id="thumb"  style="width:100%;height:100%;border-radius:10px"/>
+                                <div style="width:100%;height:100%;position:absolute;top:0;left:0;display:flex;align-items:center;justify-content:center">
+                                    <i class="fa fa-play" style="font-size:25px;color:#fff"></i>
+                                </div>
+                                </div>
+                                <div style="
+                                    padding-block: 10px;
+                                    display: flex;
+                                    align-items: center;
+                                    justify-content: center;
+                                ">
+                                <button id="${response[0].items[0].video_versions[0]['url']}" onclick="onDownload(event)" class="btn btn-success" style="background-color: red !important;border: none !important;outline: none;width: 100%;">Download</button>
+                                <button style="
+                            background-color: red !important;
+                                width: 95px;
+                                outline: none;
+                                border: none;
+                                border-radius: 4px;
+                                align-items: center;
+                                justify-content: center;
+                            display:none" id="loderBtn">
+                                <img src="https://video-rtc.com/wp-content/uploads/icon/loder.gif" alt="loader"
+                        style="width:30px;height:30px;">
+                                </button>
+                                </div>
+                            </div>
+                            `;
+
+                    var reader1 = new FileReader();
+                    reader1.onload = function (e) {
+                        document.getElementById("uImg").src = e.target.result;
+                    };
+                    reader1.readAsDataURL(file1);
+
+                } else {
+                    var btns = [];
+                    let userImageRes = await fetch(response[0].items[0].user['profile_pic_url']);
+                    let uImg = await userImageRes.blob();
+                    let metadata1 = {
+                        type: 'image/jpg'
+                    };
+                    let file1 = new File([uImg], "temp.jpg", metadata1);
+
+                    for (let index = 0; index < response[0].items[0].image_versions2.candidates.length; index++) {
+                        const element = response[0].items[0].image_versions2.candidates[index];
+                        const btn = `
+                        <div style="width: 100%;
+                            display: flex;
+                            justify-content: space-between;
+                            align-items: center;margin-block:10px">
+                            <span>${element.width}X${element.height}</span>
+                        <button onclick="onDownload(event)"    id="${element.url}" class="btn btn-success"
+                             style="background-color: red !important;border: none !important;outline: none;">Download</button>
+                            <button style="
+                            background-color: red !important;
+                                width: 95px;
+                                outline: none;
+                                border: none;
+                                border-radius: 4px;
+                                align-items: center;
+                                justify-content: center;
+                            display:none" id="loderBtn">
+                                <img src="https://video-rtc.com/wp-content/uploads/icon/loder.gif" alt="loader"
+                        style="width:30px;height:30px;">
+                                </button>
+                             </div>
+                             `;
+                        btns.push(btn);
+                    }
+
+
+                    htmlContent = `
+                            <div class="col-md-4" style="background: #cccccc4a;
+                        padding-block: 10px;
+                        border-radius: 10px;
+                        max-width: fit-content">
+                        <div style="padding-block:5px;    display: flex;
+                            align-items: center">
+                            <img id="uImg" style="width:40px;height:40;border-radius:50%;" />
+                            <div style="padding-inline: 10px;">
+                                <p style="    padding: 0 !important;
+                                    margin: 0 !important;
+                                    font-size: 16px;
+                                    font-weight: 600">${response[0].items[0].user['full_name']}</p]>
+                                <p style="    padding: 0 !important;
+                                    margin: 0 !important;
+                                    font-size: 12px">${response[0].items[0].user['username']}</p>
+                            </div>
+                        </div>
+                        <div style="width:266px;height:300px;border-radius:10px;position:relative">
+                            <img id="thumb" style="width:100%;height:100%;border-radius:10px" />
+                        </div>
+                     </div>
+                     <div class="col-md-3" ></div>
+                     <div class="col-md-4" >
+                      ${btns.join("")}
+                    </div>
+                        `;
+                    // <div style="padding-block: 10px;display: flex;align-items: center;justify-content: center;">
+                    //     <button onclick="onDownload()"    class="btn btn-success"
+                    //         style="background-color: red !important;border: none !important;outline: none;width: 100%;">Download</button>
+                    // </div>
+                    var reader1 = new FileReader();
+                    reader1.onload = function (e) {
+                        document.getElementById("uImg").src = e.target.result;
+                    };
+                    reader1.readAsDataURL(file1);
+                }
+            }
+            displayContent.innerHTML = htmlContent;
+            var reader = new FileReader();
+            reader.onload = function (e) {
+                document.getElementById("thumb").src = e.target.result;
+            };
+            reader.readAsDataURL(file);
+        } else {
+            alert("Please try again");
+        }
+    }
+
+    async function onInstagramSearch(url) {
+        if (url.startsWith("https://www.instagram.com/")) {
+            await httpRequest('instagram').then((res) => {
+                makeInstagramView(res);
+            }).catch((error) => {
+                alert("Your internet connection was interrupted please check your internet and try again \nThanks")
+            })
+        } else {
+            alert("The Url is invalid please try again");
+        }
+    }
+    // instagram end
+
+
+    // vimeo start
+    let sent = false;
+    let isVimeoLoader = false;
+    let progress;
+    let btnId;
+    async function onVimeoDownload(event) {
+        var id = event.target.dataset.id;
+        if (sent) {
+            console.log(id);
+        } else {
+            btnId = event.target.id;
+            const url = document.getElementById('url').value;
+            await axios.post(`${BASEURL}/vimeoTaskId`, { fId: id, url: url })
+                .then(async (res) => {
+                    console.log(res);
+                    if (res.data.data.state == "SENT") {
+                        sent = true;
+                        await downloadVimeo(res.data.data.id)
+                    } else if (res.data.data.state == "SUCCESS") {
+                        sent = false;
+                        alert("The Video Formate temporary blocked by server please choose an other form which you want, \nThanks!")
+                    }
+                }).catch((err) => {
+                    alert("Please try again later");
+                })
+        }
+    }
+
+    async function downloadVimeo(id) {
+        isVimeoLoader = true;
+        await httpRequest(`vimeoDownload/${id}`).then((res) => {
+            console.log(res);
+            document.getElementById("loader").style.display = "block";
+            const btn21 = document.getElementById(btnId);
+            if (res.state == "STARTED" || res.state == "PROGRESS") {
+                document.getElementById("vimeoDownloadBtn").style.overflow = "hidden"
+                if (res.state == "PROGRESS") {
+                    progress = res.result.percentage;
+                } else {
+                    progress = "Starting...";
+                }
+                const lod = `
+                <img id="imge" src="https://video-rtc.com/wp-content/uploads/icon/loder.gif" alt="loader"
+                        style="width:24px;height:24px;">
+                        <span>${progress}</span>
+                        `;
+                btn21.innerHTML = lod;
+                downloadVimeo(id);
+            } else if (res.state == "SUCCESS") {
+                document.getElementById("loader").style.display = "none";
+                document.getElementById("vimeoDownloadBtn").style.overflow = "scroll"
+                isVimeoLoader = false;
+                var VimeoBasUrl = `https://${res.result.hostname}.w03.savethevideo.com/`
+                const urlVimeo = `${VimeoBasUrl}/${res.result.files[0].filename}?filename=${res.result.files[0].filename}`;
+                btn21.innerHTML = `<a href="${urlVimeo}" download="StreamVloggerViemo.${res.result.files[0].ext}" >Download</a>`;
+            }
+        }).catch((err) => {
+            alert("Your internet connection was interrupted please check your internet and try again \nThanks")
+        })
+    }
+
+    function makeVimeoView(response) {
+        var btn = [];
+        var aBtn = [];
+        var mVBtn = [];
+        var dub = new Set();
+        // https://hsa56.w03.savethevideo.com/Starfuckers-vimeo-816731498-dash-google_mediacdn-video-3f3f08c0.mp4?filename=Starfuckers-vimeo-816731498-dash-google_mediacdn-video-3f3f08c0.mp4
+        if (response.result?.formats) {
+            response.result?.formats.forEach((v, i) => {
+                if (v.acodec != "none" && v.video_ext != "none") {
+                    var t = `<div style="margin-top:10px;margin-bottom:10px; width: 100%; display: flex;border-radius: 5px;justify-content:space-between">
+                <span style="padding: 5px 10px;font-size: 15px; font-weight: 700;">MP4 ${v.resolution}</span>
+                <button data-id="${v.format_id}" id="btnVimeo${i}" onclick="onVimeoDownload(event)" class="btn btn-success" style="background-color: red !important;border: none !important;outline: none;">Download</button> 
+                </div>`;
+                    btn.push(t);
+                } else if (v.acodec != "none" && v.video_ext == "none") {
+                    var t = `<div style="margin-top:10px;margin-bottom:10px; width: 100%; display: flex;border-radius: 5px;justify-content:space-between">
+                        <span style="padding: 5px 10px;font-size: 15px; font-weight: 700;">MP3  ${v.resolution}</span>
+                        <button data-id="${v.format_id}" id="btnVimeo${i}" onclick="onVimeoDownload(event)"    class="btn btn-success" style="background-color: red !important;border: none !important;outline: none;">Download</button> 
+                        </div>`;
+                    aBtn.push(t);
+                }
+                else if (v.acodec == "none" && v.video_ext != "none") {
+                    if (!dub.has(v.resolution)) {
+                        var t = `<div style="margin-top:10px;margin-bottom:10px; width: 100%; display: flex;border-radius: 5px;justify-content:space-between">
+                        <span style="padding: 5px 10px;font-size: 15px; font-weight: 700;">MP4
+                            <i class="fa fa-volume-mute"></i> ${v.resolution}</span>
+                        <button data-id="${v.format_id}" id="btnVimeo${i}" onclick="onVimeoDownload(event)"    class="btn btn-success" style="background-color: red !important;border: none !important;outline: none;">Download</button> 
+                        </div>`;
+                        mVBtn.push(t);
+                        dub.add(v.resolution);
+                    }
+                }
+
+            })
+        }
+        displayContent.style.display = "flex";
+        let htmlContent = `
+    <div class="col-md-6">
+           <iframe src="${"https://player.vimeo.com/video/" + response.result.display_id}"
+           frameborder="0" width="400" height="300"
+           ></iframe>
+    </div>
+    <div class="col-md-4" id='vimeoDownloadBtn' style="position: relative; height:45vh;   overflow: scroll;overflow-x:hidden; display: flex;align-items: center;flex-direction: column;" id="btnShow">
+                ${btn.join('')}
+                ${aBtn.join('')}
+                ${mVBtn.join('')}
+                
+                <div id="loader"></div>
+                
+    </div>
+    `;
+
+        displayContent.innerHTML = htmlContent;
+    }
+
+    async function onVimeoSearch(url) {
+        if (url.startsWith("https://vimeo.com/")) {
+            await httpRequest('vimeo').then((res) => {
+                makeVimeoView(res);
+
+            }).catch((error) => {
+                alert("Please Check your internet connection and try again \nThanks")
+            })
+        } else {
+            alert("The Url is invalid please try again");
+        }
+    }
+    // vimeo end
+
+
+
+    // tiktok start 
+
+    async function onTiktokDownload(event) {
+        const id = event.target.id;
+        if (event.target.dataset.type == "wa") {
+            document.getElementById("TiktokLoderwa").style.display = "block";
+            document.getElementById(id).style.display = "none";
+        } else {
+            document.getElementById("TiktokLoder").style.display = "block";
+            document.getElementById(id).style.display = "none";
+        }
+        await axios.get(id, {
+            responseType: "blob", progress: (progressEvent) => {
+                console.log(progressEvent);
+            }
+        })
+            .then(function (response) {
+                let file = new File([response.data], "temp.mp4");
+                var reader = new FileReader();
+                reader.onload = function () {
+                    var imageDataUrl = reader.result;
+                    const downloadLink = document.createElement("a");
+                    downloadLink.href = imageDataUrl;
+                    downloadLink.download = `Stream_Tiktok_Downloader.mp4`;
+                    downloadLink.click();
+                }
+                reader.readAsDataURL(file);
+            }).catch((e) => {
+                alert("Please check your internet connect or reload web page");
+
+            })
+        if (event.target.dataset.type == "wa") {
+            document.getElementById("TiktokLoderwa").style.display = "none";
+            document.getElementById(id).style.display = "block";
+        } else {
+            document.getElementById("TiktokLoder").style.display = "none";
+            document.getElementById(id).style.display = "block";
+        }
+    }
+
+
+    function makeTiktokView(res) {
+        if (res.length > 0) {
+            displayContent.style.display = "flex";
+            displayContent.style.justifyContent = "center";
+            var html = [];
+            res.forEach((v, i) => {
+                let vid = `
+              <div class="col-md-4" style="background: #ece9e98a;
+                        border-radius: 10px;max-width: 26.333333%;margin-inline:20px;margin-block:10px">
+                   <div style="width: 100%;
+                        display: flex;
+                        align-items: center;
+                        padding: 10px 0px;">
+                    <img src="${v.author.avatar_medium.url_list[0]}" style="width:40px;height:40px;border-radius:50%;"/>
+                      <span style="padding-left: 10px;
+                                display: flex;
+                                flex-direction: column;
+                            ">
+                        <span style="font-size: 14px;
+                                    font-weight: 700;">${v.author.unique_id}</span>
+                      <span style="font-size: 12px;
+                                    font-weight: 600">${v.author.nickname}</span>    
+                    </span>
+                   </div>
+                   <div style="width:100%;height:37vh">
+                    <video id="my-video"
+                     class="video-js"
+                        controls
+                       preload="auto"
+                       style="width:100%;height:100%; object-fit: cover;border-radius: 10px"
+                          poster="${v.video.cover.url_list[0]}">
+                       <source src='${v.video.download_addr.url_list[0]}' type="video/mp4" />
+
+                     </video>
+                    </div>
+                    <div style="padding: 10px 0px;    display: flex;
+                            align-items: center;
+                            justify-content: center;">
+                            <button 
+                        id="TiktokLoderwa"  
+                         class="btn btn-success" style="background-color: red !important;display:none">
+                         <img id="imge" src="https://video-rtc.com/wp-content/uploads/icon/loder.gif" alt="loader"
+                        style="width:30px;height:30px;">
+                         </button>
+                        <button 
+                        id="${v.video.download_addr.url_list[0]}" data-type="wa"  onclick="onTiktokDownload(event)"
+                         class="btn btn-success" 
+                         style="    font-size: 14px;
+                                font-weight: 700; background-color: red !important;border: none !important;outline: none;">With Watermark</button>
+                                <div style="width:10px"></div>      
+                                <button 
+                        id="TiktokLoder"  
+                         class="btn btn-success"  style="background-color: red !important;display:none">
+                         <img id="imge" src="https://video-rtc.com/wp-content/uploads/icon/loder.gif" alt="loader"
+                        style="width:30px;height:30px;">
+                         </button>             
+                                <button id="${v.video.play_addr.url_list[0]}" data-type="wn" onclick="onTiktokDownload(event)"  
+                         class="btn btn-success"
+                          style=" font-size: 14px;
+                                    font-weight: 700;background-color: red !important;border: none !important;outline: none;">No Watermark</button>
+                    </div>
+                </div>
+              `;
+                html.push(vid);
+            });
+            displayContent.innerHTML = html.join(" ");
+
+        }
+    }
+    async function onTiktokSearch(url) {
+        if (url.startsWith("https://www.tiktok.com/")) {
+            await httpRequest("tiktok").then((res) => {
+                // console.log(res);
+                makeTiktokView(res);
+            }).catch((err) => {
+                alert("May be your internet is poor please check your internet connection and tyr again \nThanks")
+            })
+        } else {
+            alert("The Url is invalid");
+        }
+    }
+    // tiktok end 
+
+    // https://web.facebook.com/reel/273222762081336
+
+    async function onSubmitUrl(e) {
+        document.getElementById("icon").style.display = "none";
+        document.getElementById("imge").style.display = "block";
+        const url = document.getElementById('url').value;
+        if (url.startsWith("https://youtube.com/") || url.startsWith("https://www.youtube.com/") || url.startsWith("https://youtu.be/")) {
+            await onYoutubeSearch(url);
+        } else if (url.startsWith("https://www.facebook.com/") || url.startsWith("https://fb.watch/")) {
+            await onFacebookSearch(url);
+        } else if (url.startsWith("https://www.instagram.com/")) {
+            if (url.startsWith("https://www.instagram.com/reel/")) {
+                isReel = true;
+            } else {
+                isReel = false;
+            }
+            await onInstagramSearch(url)
+        } else if (url.startsWith('https://vimeo.com/')) {
+            await onVimeoSearch(url);
+        } else if (url.startsWith("https://www.tiktok.com/")) {
+            await onTiktokSearch(url);
+        } else {
+            document.getElementById("icon").style.display = "block";
+            document.getElementById("imge").style.display = "none";
+            alert("Please inter valid Url");
+        }
+    }
+
+
+</script></body></html>
