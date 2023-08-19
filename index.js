@@ -16,7 +16,7 @@ const PORT = 3000;
 
 app.use(cors(
     {
-  origin: 'https://video-rtc.com/'
+  origin: 'https://video-rtc.com'
 }
 ))
 app.use(express.static(path.join(__dirname + "/downloads/")))
