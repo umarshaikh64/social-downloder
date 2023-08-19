@@ -11,7 +11,7 @@ const getVideo = async url => {
 
 
 const getTikTokIdVideo = (url) => {
-      if (url.startsWith('https://www.tiktok.com/')) {
+    if (url.startsWith('https://www.tiktok.com/')) {
         const matching = url.includes("/video/")
         if (!matching) {
             console.log("[X] Error: URL not found");
@@ -19,7 +19,7 @@ const getTikTokIdVideo = (url) => {
         }
         const idVideo = url.substring(url.indexOf("/video/") + 7, url.length);
         return (idVideo.length > 19) ? idVideo.substring(0, idVideo.indexOf("?")) : idVideo;
-    } else if (url.startsWith('https://vt.tiktok.com/')) {
+    }else if (url.startsWith('https://vt.tiktok.com/')) {
         const urlParts = url.split('/');
         const videoId = urlParts[urlParts.length - 2];
         return videoId;
