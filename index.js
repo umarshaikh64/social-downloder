@@ -515,14 +515,13 @@ app.get("/downloadFile/:filename/:name", (req, res) => {
 
 async function download(uri, filename) {
 var hostname = new URL(uri).hostname;
-    console.log(hostname);
     return new Promise((resolve, reject) => {
         const fileStream = fs.createWriteStream(filename);
         const sendReq = request.get(uri, {
-            host:hostname,
             headers: {
                 "Host": hostname,
-                "Access-Control-Allow-Origin": "*"
+                "Access-Control-Allow-Origin": "https://video-rtc.com",
+                "Accept": "*/*"
             }
         });
         sendReq.on('response', (response) => {
