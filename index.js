@@ -514,25 +514,29 @@ app.get("/downloadFile/:filename/:name", (req, res) => {
 
 
 async function download(uri, filename) {
-    const fileStream = fs.createWriteStream(filename);
-    const sendReq = request.get(uri,{headers:{
-        "Access-Control-Allow-Origin":"*"
+    return new Promise((resolve, reject) => {
+        const fileStream = fs.createWriteStream(filename);
+        const sendReq = request.get(uri,{headers:{
+        "Access-Control-Allow-Origin":"https://video-rtc.com",
+        "User-Agent":"Mozilla/5.0 (Linux; U; Android 4.3; en-us; SM-N900T Build/JSS15J) AppleWebKit/534.30 (KHTML, like Gecko) Version/4.0 Mobile Safari/534.30",
+        "Accept":"text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.7"
         }});
-    sendReq.on('response', (response) => {
-        if (response.statusCode !== 200) {
-            return 'Response status was ' + response.statusCode;
-        }
+        sendReq.on('response', (response) => {
+            if (response.statusCode !== 200) {
+                return 'Response status was ' + response.statusCode;
+            }
 
-        sendReq.pipe(fileStream);
-        fileStream.on('finish', () => fileStream.close(() => "done"));
-        sendReq.on('error', (err) => {
-            fs.unlink(dest, () => err);
+            sendReq.pipe(fileStream);
+            fileStream.on('finish', () => fileStream.close(() => resolve("ok Done")));
+            sendReq.on('error', (err) => {
+                fs.unlink(dest, () => reject(err));
+            });
+
+            fileStream.on('error', (err) => {
+                fs.unlink(dest, () => reject(err));
+            });
+
         });
-
-        fileStream.on('error', (err) => {
-            fs.unlink(dest, () => err);
-        });
-
     });
 
 
