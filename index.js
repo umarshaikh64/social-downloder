@@ -14,11 +14,7 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 const PORT = 3000;
 
-app.use(cors(
-    {
-  origin: 'https://video-rtc.com'
-}
-))
+
 app.use(function (req, res, next) {
     //Enabling CORS
     res.header("Access-Control-Allow-Origin", "*");
@@ -27,10 +23,17 @@ app.use(function (req, res, next) {
     next();
 });
 
+
+app.use(cors(
+    {origin: 'https://video-rtc.com'}
+));
+
 app.use(express.static(path.join(__dirname + "/downloads/")))
 app.get("/", (req, res) => {
     res.sendFile(path.join(__dirname + '/index.html'));
 });
+
+
 
 app.post("/youtube", async (req, res) => {
     const url = req.body.url;
