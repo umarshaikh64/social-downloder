@@ -432,6 +432,7 @@ app.post("/vimeo", async (req, res) => {
 
 
 
+
 app.post('/downloadMedia', async (req, res) => {
     //    return res.send(req.body.url);
     try {
@@ -445,8 +446,8 @@ app.post('/downloadMedia', async (req, res) => {
         let info = await ytdl.getInfo(videoid);
         let format = ytdl.filterFormats(info.formats, downloadType == "mp3a" && (videoFormate != undefined || videoFormate != "") ? "videoonly" : downloadType == "mp3" ? "audioonly" : 'videoandaudio');
         let title = info.player_response.videoDetails.title.replace(/[^\x00-\x7F]/g, "");
-        const fileStream = fs.createWriteStream(`./downloads/temp.mp4`);
         const type = downloadType == "mp3a" ? "mp4" : downloadType == "mp3" ? "mp3" : 'mp4';
+        const fileStream = fs.createWriteStream(`./downloads/temp.${type}`);
         ytdl(url, {
             format: type,
             quality: format.map(v => v.itag)
@@ -476,6 +477,7 @@ app.post('/downloadMedia', async (req, res) => {
         });
     }
 })
+
 
 
 app.post('/downloadFB', async (req, res) => {
@@ -510,10 +512,10 @@ app.get("/downloadFile/:filename/:name", (req, res) => {
         });
     }
 
-    const file = `${__dirname}/downloads/${filename}`;
+    const file = `${__dirname}/downloads/temp.${filename.split('.')[1]}`;
 
     if (fs.existsSync(file)) {
-        res.download(file, name,
+        res.download(file, filename,
             (err) => {
                 if (err) {
                     res.status(400).json({
@@ -533,7 +535,6 @@ app.get("/downloadFile/:filename/:name", (req, res) => {
     }
 
 });
-
 
 
 async function download(uri, filename) {
