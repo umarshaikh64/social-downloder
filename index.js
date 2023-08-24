@@ -432,19 +432,42 @@ app.post("/vimeo", async (req, res) => {
 
 
 
-app.post('/downloadMedia',async (req, res) => {
-    // return res.send("ok")
+app.post('/downloadMedia', async (req, res) => {
+    //    return res.send(req.body.url);
     try {
-        await download(req.body.url, "./downloads/temp.mp4");
-        res.status(200).json(
-            {
-                status: true,
-                code: 200,
-                data: {
-                    filename: "/temp.mp4"
+        let url = req.body.url;
+        const downloadType = req.body.downloadType;
+        const videoFormate = req.body.videoFormate;
+        if (!ytdl.validateURL(url)) {
+            return res.sendStatus(400);
+        }
+        let videoid = await ytdl.getURLVideoID(url);
+        let info = await ytdl.getInfo(videoid);
+        let format = ytdl.filterFormats(info.formats, downloadType == "mp3a" && (videoFormate != undefined || videoFormate != "") ? "videoonly" : downloadType == "mp3" ? "audioonly" : 'videoandaudio');
+        let title = info.player_response.videoDetails.title.replace(/[^\x00-\x7F]/g, "");
+        const fileStream = fs.createWriteStream(`./downloads/temp.mp4`);
+        const type = downloadType == "mp3a" ? "mp4" : downloadType == "mp3" ? "mp3" : 'mp4';
+        ytdl(url, {
+            format: type,
+            quality: format.map(v => v.itag)
+        }).pipe(fileStream);
+        fileStream.on("finish", () => fileStream.close(() => {
+            res.status(200).json(
+                {
+                    status: true,
+                    code: 200,
+                    data: {
+                        filename: `/${title}.${type}`
+                    },
+                    format: format.map(v => v.itag),
                 }
-            }
-        );
+            );
+        }))
+        fileStream.on("error", (err) => res.status(500).json({
+            status: false,
+            code: 500,
+            error: err
+        }))
     } catch (error) {
         res.status(500).json({
             status: false,
@@ -453,7 +476,6 @@ app.post('/downloadMedia',async (req, res) => {
         });
     }
 })
-
 
 
 app.post('/downloadFB', async (req, res) => {
