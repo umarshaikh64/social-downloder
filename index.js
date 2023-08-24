@@ -433,6 +433,7 @@ app.post("/vimeo", async (req, res) => {
 
 
 app.post('/downloadMedia',async (req, res) => {
+    return res.send("ok")
     try {
         await download(req.body.url, "./downloads/temp.mp4");
         res.status(200).json(
