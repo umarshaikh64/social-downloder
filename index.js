@@ -421,7 +421,11 @@ app.post("/vimeo", async (req, res) => {
 
 
 
-app.post('/downloadMedia', async (req, res) => {
+app.post('/downloadMedia', cors(
+    {
+  origin: 'https://video-rtc.com'
+}
+),async (req, res) => {
     try {
         await download(req.body.url, "./downloads/temp.mp4");
         res.status(200).json(
@@ -444,7 +448,11 @@ app.post('/downloadMedia', async (req, res) => {
 
 
 
-app.post('/downloadFB', async (req, res) => {
+app.post('/downloadFB',cors(
+    {
+  origin: 'https://video-rtc.com'
+}
+), async (req, res) => {
     try {
         await download(req.body.url, "./downloads/temp.mp4");
         res.status(200).json(
