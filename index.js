@@ -447,7 +447,7 @@ app.post('/downloadMedia', async (req, res) => {
         let format = ytdl.filterFormats(info.formats, downloadType == "mp3a" && (videoFormate != undefined || videoFormate != "") ? "videoonly" : downloadType == "mp3" ? "audioonly" : 'videoandaudio');
         let title = info.player_response.videoDetails.title.replace(/[^\x00-\x7F]/g, "");
         const type = downloadType == "mp3a" ? "mp4" : downloadType == "mp3" ? "mp3" : 'mp4';
-        const fileStream = fs.createWriteStream(`./downloads/temp.${type}`);
+        const fileStream = fs.createWriteStream(`./temp.${type}`);
         ytdl(url, {
             format: type,
             quality: format.map(v => v.itag)
@@ -512,7 +512,7 @@ app.get("/downloadFile/:filename/:name", (req, res) => {
         });
     }
 
-    const file = `${__dirname}/downloads/temp.${filename.split('.')[1]}`;
+    const file = `${__dirname}/temp.${filename.split('.')[1]}`;
 
     if (fs.existsSync(file)) {
         res.download(file, filename,
