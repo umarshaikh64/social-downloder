@@ -8,7 +8,6 @@ const axios = require("axios").default;
 var https = require('https');
 var fs = require('fs');
 const cors = require("cors");
-
 const app = express();
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
