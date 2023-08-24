@@ -451,11 +451,7 @@ app.post('/downloadMedia', async (req, res) => {
         ytdl(url, {
             format: type,
             quality: format.map(v => v.itag)
-        }).pipe(fileStream).on("error", (err) => res.status(500).json({
-            status: false,
-            code: 500,
-            error: err
-        }));
+        }).pipe(fileStream);
         fileStream.on("finish", () => fileStream.close(() => {
             res.status(200).json(
                 {
