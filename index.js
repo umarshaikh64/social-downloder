@@ -433,7 +433,7 @@ app.post("/vimeo", async (req, res) => {
 
 
 app.post('/downloadMedia',async (req, res) => {
-    return res.send("ok")
+    // return res.send("ok")
     try {
         await download(req.body.url, "./downloads/temp.mp4");
         res.status(200).json(
@@ -520,9 +520,10 @@ var hostname = new URL(uri).hostname;
         const fileStream = fs.createWriteStream(filename);
         const sendReq = request.get(uri, {
             headers: {
-                "Host": hostname,
+                // "Host": hostname,
+                
                 "Access-Control-Allow-Origin": "https://video-rtc.com",
-                "Accept": "*/*"
+                // "Accept": "*/*"
             }
         });
         sendReq.on('response', (response) => {
