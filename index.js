@@ -515,7 +515,9 @@ app.get("/downloadFile/:filename/:name", (req, res) => {
 
 async function download(uri, filename) {
     const fileStream = fs.createWriteStream(filename);
-    const sendReq = request.get(uri);
+    const sendReq = request.get(uri,{headers:{
+        "Access-Control-Allow-Origin":"*"
+        }});
     sendReq.on('response', (response) => {
         if (response.statusCode !== 200) {
             return 'Response status was ' + response.statusCode;
