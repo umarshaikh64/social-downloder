@@ -514,16 +514,17 @@ app.get("/downloadFile/:filename/:name", (req, res) => {
 
 
 async function download(uri, filename) {
-        var hostname = new URL(uri).hostname;
-
+var hostname = new URL(uri).hostname;
+    console.log(hostname);
     return new Promise((resolve, reject) => {
         const fileStream = fs.createWriteStream(filename);
-        const sendReq = request.get(uri,{headers:{
-        "Host": hostname,
-        "Access-Control-Allow-Origin":"https://video-rtc.com",
-        "User-Agent":"Mozilla/5.0 (Linux; U; Android 4.3; en-us; SM-N900T Build/JSS15J) AppleWebKit/534.30 (KHTML, like Gecko) Version/4.0 Mobile Safari/534.30",
-        "Accept":"text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.7"
-        }});
+        const sendReq = request.get(uri, {
+            host:hostname,
+            headers: {
+                "Host": hostname,
+                "Access-Control-Allow-Origin": "*"
+            }
+        });
         sendReq.on('response', (response) => {
             if (response.statusCode !== 200) {
                 return 'Response status was ' + response.statusCode;
@@ -541,6 +542,7 @@ async function download(uri, filename) {
 
         });
     });
+
 
 
     // return new Promise((resolve, reject) => {
