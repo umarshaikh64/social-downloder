@@ -508,29 +508,52 @@ app.get("/downloadFile/:filename/:name", (req, res) => {
 
 });
 
-async function download(uri, filename) {
-    return new Promise((resolve, reject) => {
-        const fileStream = fs.createWriteStream(filename);
 
-        https.get(uri, response => {
-            if (response.statusCode !== 200) {
-                reject(new Error(`Failed to download ${uri}. Status code: ${response.statusCode}`));
-                return;
-            }
-            response.pipe(fileStream)
-            fileStream.on('finish', () => {
-                fileStream.close();
-                resolve();
-            });
-            fileStream.on('error', error => {
-                fs.unlink(filename, () => { }); // Delete the file
-                reject(error);
-            });
-        }).on('error', error => {
-            reject(error);
+
+async function download(uri, filename) {
+    const fileStream = fs.createWriteStream(filename);
+    const sendReq = request.get(uri);
+    sendReq.on('response', (response) => {
+        if (response.statusCode !== 200) {
+            return 'Response status was ' + response.statusCode;
+        }
+
+        sendReq.pipe(fileStream);
+        fileStream.on('finish', () => fileStream.close(() => "done"));
+        sendReq.on('error', (err) => {
+            fs.unlink(dest, () => err);
         });
+
+        fileStream.on('error', (err) => {
+            fs.unlink(dest, () => err);
+        });
+
     });
+
+
+    // return new Promise((resolve, reject) => {
+    // const fileStream = fs.createWriteStream(filename);
+
+    //     https.get(uri, response => {
+    //         if (response.statusCode !== 200) {
+    //             reject(new Error(`Failed to download ${uri}. Status code: ${response.statusCode}`));
+    //             return;
+    //         }
+    //         response.pipe(fileStream)
+    //         fileStream.on('finish', () => {
+    //             fileStream.close();
+    //             resolve();
+    //         });
+    //         fileStream.on('error', error => {
+    //             fs.unlink(filename, () => { }); // Delete the file
+    //             reject(error);
+    //         });
+    //     }).on('error', error => {
+    //         reject(error);
+    //     });
+    // });
 }
+
 
 
 
