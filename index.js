@@ -514,9 +514,12 @@ app.get("/downloadFile/:filename/:name", (req, res) => {
 
 
 async function download(uri, filename) {
+        var hostname = new URL(uri).hostname;
+
     return new Promise((resolve, reject) => {
         const fileStream = fs.createWriteStream(filename);
         const sendReq = request.get(uri,{headers:{
+        "Host": hostname,
         "Access-Control-Allow-Origin":"https://video-rtc.com",
         "User-Agent":"Mozilla/5.0 (Linux; U; Android 4.3; en-us; SM-N900T Build/JSS15J) AppleWebKit/534.30 (KHTML, like Gecko) Version/4.0 Mobile Safari/534.30",
         "Accept":"text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.7"
