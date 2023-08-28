@@ -443,9 +443,7 @@ app.post('/downloadMedia', async (req, res) => {
             response.on("end", function () {
                 res.end();
             });
-        }).on('error', error => {
-            reject(error);
-        });
+        })
     } catch (error) {
         res.status(500).json({
             status: false,
