@@ -434,16 +434,18 @@ app.post("/vimeo", async (req, res) => {
 
 app.post('/downloadMedia', async (req, res) => {
        try {
-        await download(req.body.url, "./downloads/temp.mp4");
-        res.status(200).json(
-            {
-                status: true,
-                code: 200,
-                data: {
-                    filename: "/temp.mp4"
-                }
-            }
-        );
+        https.get(decodeURIComponent(req.body.url), function (response) {
+            res.setHeader("Content-Length", response.headers["content-length"]);
+            if (response.statusCode >= 400) return res.status(500).send("Error");
+            response.on("data", function (chunk) {
+                res.write(chunk);
+            });
+            response.on("end", function () {
+                res.end();
+            });
+        }).on('error', error => {
+            reject(error);
+        });
     } catch (error) {
         res.status(500).json({
             status: false,
