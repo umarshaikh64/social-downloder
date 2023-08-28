@@ -436,38 +436,48 @@ app.post('/downloadMedia', async (req, res) => {
     //    return res.send(req.body.url);
     try {
         let url = req.body.url;
-        const downloadType = req.body.downloadType;
-        const videoFormate = req.body.videoFormate;
-        if (!ytdl.validateURL(url)) {
-            return res.sendStatus(400);
-        }
-        let videoid = await ytdl.getURLVideoID(url);
-        let info = await ytdl.getInfo(videoid);
-        let format = ytdl.filterFormats(info.formats, downloadType == "mp3a" && (videoFormate != undefined || videoFormate != "") ? "videoonly" : downloadType == "mp3" ? "audioonly" : 'videoandaudio');
-        let title = info.player_response.videoDetails.title.replace(/[^\x00-\x7F]/g, "");
-        const type = downloadType == "mp3a" ? "mp4" : downloadType == "mp3" ? "mp3" : 'mp4';
-        const fileStream = fs.createWriteStream(`./temp.${type}`);
-        ytdl(url, {
-            format: type,
-            quality: format.map(v => v.itag)
-        }).pipe(fileStream);
-        fileStream.on("finish", () => fileStream.close(() => {
-            res.status(200).json(
-                {
-                    status: true,
-                    code: 200,
-                    data: {
-                        filename: `/${title}.${type}`
-                    },
-                    format: format.map(v => v.itag),
-                }
-            );
-        }))
-        fileStream.on("error", (err) => res.status(500).json({
-            status: false,
-            code: 500,
-            error: err
-        }))
+         https.get(decodeURIComponent(url), function (response) {
+            res.setHeader("Content-Length", response.headers["content-length"]);
+            if (response.statusCode >= 400) res.status(500).send("Error");
+            response.on("data", function (chunk) {
+                res.write(chunk);
+            });
+            response.on("end", function () {
+                res.end();
+            });
+        });
+        // const downloadType = req.body.downloadType;
+        // const videoFormate = req.body.videoFormate;
+        // if (!ytdl.validateURL(url)) {
+        //     return res.sendStatus(400);
+        // }
+        // let videoid = await ytdl.getURLVideoID(url);
+        // let info = await ytdl.getInfo(videoid);
+        // let format = ytdl.filterFormats(info.formats, downloadType == "mp3a" && (videoFormate != undefined || videoFormate != "") ? "videoonly" : downloadType == "mp3" ? "audioonly" : 'videoandaudio');
+        // let title = info.player_response.videoDetails.title.replace(/[^\x00-\x7F]/g, "");
+        // const type = downloadType == "mp3a" ? "mp4" : downloadType == "mp3" ? "mp3" : 'mp4';
+        // const fileStream = fs.createWriteStream(`./temp.${type}`);
+        // ytdl(url, {
+        //     format: type,
+        //     quality: format.map(v => v.itag)
+        // }).pipe(fileStream);
+        // fileStream.on("finish", () => fileStream.close(() => {
+        //     res.status(200).json(
+        //         {
+        //             status: true,
+        //             code: 200,
+        //             data: {
+        //                 filename: `/${title}.${type}`
+        //             },
+        //             format: format.map(v => v.itag),
+        //         }
+        //     );
+        // }))
+        // fileStream.on("error", (err) => res.status(500).json({
+        //     status: false,
+        //     code: 500,
+        //     error: err
+        // }))
     } catch (error) {
         res.status(500).json({
             status: false,
