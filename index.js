@@ -24,7 +24,7 @@ app.use(function (req, res, next) {
 
 
 app.use(cors(
-    {origin: 'https://video-rtc.com'}
+    {origin: '*'}
 ));
 
 app.use(express.static(path.join(__dirname + "/downloads/")))
